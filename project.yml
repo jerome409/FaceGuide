@@ -1,0 +1,24 @@
+name: FaceGuide
+options:
+  bundleIdPrefix: com.faceguide.prototype
+  deploymentTarget:
+    iOS: '18.0'
+targets:
+  FaceGuide:
+    type: application
+    platform: iOS
+    sources: [Sources]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.faceguide.prototype.app
+        SWIFT_VERSION: '5.0'
+        TARGETED_DEVICE_FAMILY: '1'
+        GENERATE_INFOPLIST_FILE: YES
+    info:
+      path: Generated/Info.plist
+      properties:
+        CFBundleDisplayName: FaceGuide
+        NSCameraUsageDescription: Afficher votre visage dans une fenêtre flottante pendant votre démonstration.
+        UIBackgroundModes: [audio, voip]
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
