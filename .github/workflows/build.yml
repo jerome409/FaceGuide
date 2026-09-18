@@ -1,0 +1,31 @@
+name: Compiler le prototype iPhone
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: macos-26
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Installer XcodeGen
+        run: brew install xcodegen
+      - name: Générer le projet
+        run: xcodegen generate
+      - name: Compiler sans signature
+        run: >-
+          xcodebuild -project FaceGuide.xcodeproj -scheme FaceGuide
+          -configuration Release -sdk iphoneos -destination 'generic/platform=iOS'
+          -derivedDataPath build CODE_SIGNING_ALLOWED=NO build
+      - name: Préparer une IPA à signer localement
+        run: |
+          mkdir -p package/Payload
+          cp -R build/Build/Products/Release-iphoneos/FaceGuide.app package/Payload/
+          cd package
+          zip -qr ../FaceGuide-unsigned.ipa Payload
+      - uses: actions/upload-artifact@v4
+        with:
+          name: FaceGuide-unsigned
+          path: FaceGuide-unsigned.ipa
+          retention-days: 3
